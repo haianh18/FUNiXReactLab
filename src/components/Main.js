@@ -19,7 +19,7 @@ function Main() {
       <StaffDetail
         nv={
           nhanvien.staffs.filter(
-            (item) => item.id === parseInt(match.params.nhanvienId, 10)
+            (item) => item.id === parseInt(match.params.staffId, 10)
           )[0]
         }
       />
@@ -32,10 +32,10 @@ function Main() {
       <Switch>
         <Route
           exact
-          path="/nhanvien"
+          path="/staff"
           component={() => <StaffList staffs={nhanvien.staffs} />}
         />
-        <Route path="/nhanvien/:nhanvienId" component={StaffWithId} />
+        <Route path="/staff/:staffId" component={StaffWithId} />
         <Route
           path="/department"
           component={() => <Department dept={nhanvien.departments} />}

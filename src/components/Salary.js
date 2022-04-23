@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 
 const luongCB = 3000000;
-const luongGio = 200000 / 8;
+const luongOT = 200000;
 
 function RenderSalary({ salary, colorSalary }) {
   return (
@@ -19,10 +19,10 @@ function RenderSalary({ salary, colorSalary }) {
       <CardBody>
         <CardText>Mã nhân viên: {salary.id}</CardText>
         <CardText>Hệ số lương: {salary.salaryScale}</CardText>
-        <CardText>Số giờ làm thêm: {salary.overTime}</CardText>
+        <CardText>Số ngày làm thêm: {salary.overTime}</CardText>
         <CardText className="bg-light p-2 shadow">
           Lương: {""}
-          {(salary.salaryScale * luongCB + salary.overTime * luongGio).toFixed(
+          {(salary.salaryScale * luongCB + salary.overTime * luongOT).toFixed(
             0
           )}
         </CardText>
