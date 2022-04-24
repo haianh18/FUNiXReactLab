@@ -4,7 +4,9 @@ import { Card, CardText, CardImg } from "reactstrap";
 
 function StaffList(props) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortId, setSortId] = useState(false);
   const listNhanvien = props.staffs
+
     .filter((val) => {
       if (searchTerm === "") {
         return val;
@@ -14,11 +16,12 @@ function StaffList(props) {
         return val;
       }
     })
+    .sort((a, b) => (sortId ? a.id - b.id : b.id - a.id))
     .map((nv) => {
       return (
-        <div className="col-6 col-md-4 col-lg-2 mb-1 mt-1">
+        <div key={nv.id} className="col-6 col-md-4 col-lg-2 mb-1 mt-1">
           <Card>
-            <Link key={nv.id} to={`/staff/${nv.id}`}>
+            <Link to={`/staff/${nv.id}`}>
               <CardImg
                 className="mx-auto img-thumbnail"
                 src={nv.image}
@@ -34,15 +37,28 @@ function StaffList(props) {
     });
 
   return (
-    <div className="search">
+    <div className="search container">
       <div className="searchInputs container m-3">
-        <input
-          type="text"
-          placeholder="Tìm nhân viên..."
-          onChange={(event) => {
-            setSearchTerm(event.target.value);
-          }}
-        />
+        <div className="row">
+          <div className="m-1">
+            <input
+              className="form-control form-control-md"
+              type="text"
+              placeholder="Tìm nhân viên..."
+              onChange={(event) => {
+                setSearchTerm(event.target.value);
+              }}
+            />
+          </div>
+          <div className="m-1 mt-1">
+            <button
+              className="btn btn-primary"
+              onClick={() => setSortId(!sortId)}
+            >
+              Sắp xếp theo MSNV
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="dataResult container m-1">
