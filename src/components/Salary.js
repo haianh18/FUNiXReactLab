@@ -34,13 +34,17 @@ function RenderSalary({ salary, colorSalary }) {
 const Salary = (props) => {
   const [sortSalary, setSortSalary] = useState(false);
 
-  const salary = props.salary.map((ss) => {
-    return (
-      <div className="col-12 col-md-6 col-lg-4 mt-2 mb-2" key={ss.id}>
-        <RenderSalary salary={ss} />
-      </div>
-    );
-  });
+  const salary = props.salary
+    .sort((a, b) =>
+      sortSalary ? a.salaryScale - b.salaryScale : b.salaryScale - a.salaryScale
+    )
+    .map((ss) => {
+      return (
+        <div className="col-12 col-md-6 col-lg-4 mt-2 mb-2" key={ss.id}>
+          <RenderSalary salary={ss} />
+        </div>
+      );
+    });
   return (
     <div className="container">
       <div className="row">
