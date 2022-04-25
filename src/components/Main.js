@@ -9,7 +9,7 @@ import Department from "./Department";
 import Salary from "./Salary";
 
 function Main() {
-  const [nhanvien, setNhanvien] = useState({
+  const [nhanvien] = useState({
     staffs: STAFFS,
     departments: DEPARTMENTS,
   });
