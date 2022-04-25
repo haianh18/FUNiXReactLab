@@ -19,7 +19,9 @@ function Footer(props) {
               <i className="fa fa-fax fa-lg"></i>: +852 8765 4321
               <br />
               <i className="fa fa-envelope fa-lg"></i>:{" "}
-              <a href="mailto:confusion@food.net">confusion@food.net</a>
+              <a className="text-dark" href="mailto:confusion@food.net">
+                confusion@food.net
+              </a>
             </address>
           </div>
           <div className="col-12 col-sm-4 align-self-center">
