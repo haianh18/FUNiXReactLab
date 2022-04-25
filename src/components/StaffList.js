@@ -16,7 +16,7 @@ function StaffList(props) {
         return val;
       }
     })
-    .sort((a, b) => (sortId ? a.id - b.id : b.id - a.id))
+    .sort((a, b) => (sortId ? b.id - a.id : a.id - b.id))
     .map((nv) => {
       return (
         <div key={nv.id} className="col-6 col-md-4 col-lg-2 mb-1 mt-1">
