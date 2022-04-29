@@ -3,8 +3,6 @@ import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, CardText, CardTitle, CardImg } from "reactstrap";
 import dateFormat from 'dateformat';
 
-
-
 function StaffDetail(props) {
     if (props.nv != null) {
         return (
@@ -22,17 +20,19 @@ function StaffDetail(props) {
                     </div>
                 </div>
                 <div className="row mb-3">
-                    <RenderStaff staff={props.nv}/>
+                    <RenderStaff staff={props.nv} />
                 </div>
+
             </div>
         );
     } else {
-    return <div></div>
+        return <div></div>
     }
 }
 
 function RenderStaff({ staff }) {
     if (staff != null) {
+        console.log(staff.department);
         return (
             <div className="col-12">
                 <div className="row">
