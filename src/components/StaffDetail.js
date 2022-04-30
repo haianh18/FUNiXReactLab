@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Breadcrumb, BreadcrumbItem, CardText, CardTitle, CardImg } from "reactstrap";
 import dateFormat from 'dateformat';
 
-function StaffDetail(props) {
+const StaffDetail = (props) => {
     if (props.nv != null) {
         return (
             <div className="container">
@@ -32,7 +32,6 @@ function StaffDetail(props) {
 
 function RenderStaff({ staff }) {
     if (staff != null) {
-        console.log(staff.department);
         return (
             <div className="col-12">
                 <div className="row">

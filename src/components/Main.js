@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import StaffList from "./StaffList";
 import StaffDetail from "./StaffDetail";
-import { STAFFS, DEPARTMENTS } from "../data/staffs";
 import Department from "./Department";
 import Salary from "./Salary";
+import { connect } from 'react-redux';
+
+const mapStateToProps = state => {
+  return {
+    staffs: state.staffs,
+    department: state.departments
+  }
+};
 
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      staffs: STAFFS,
-      departments: DEPARTMENTS,
-    };
     this.addStaff = this.addStaff.bind(this);
   }
 
@@ -31,7 +34,7 @@ class Main extends Component {
       return (
         <StaffDetail
           nv={
-            this.state.staffs.filter(
+            this.props.staffs.filter(
               (item) => item.id === parseInt(match.params.staffId, 10)
             )[0]
           }
@@ -45,16 +48,16 @@ class Main extends Component {
           <Route
             exact
             path="/staff"
-            component={() => <StaffList onAdd={this.addStaff} staffs={this.state.staffs} />}
+            component={() => <StaffList onAdd={this.addStaff} staffs={this.props.staffs} />}
           />
           <Route path="/staff/:staffId" component={StaffWithId} />
           <Route
             path="/department"
-            component={() => <Department dept={this.state.departments} />}
+            component={() => <Department dept={this.props.departments} />}
           />
           <Route
             path="/salary"
-            component={() => <Salary salary={this.state.staffs} />}
+            component={() => <Salary salary={this.props.staffs} />}
           />
         </Switch>
         <Footer />
