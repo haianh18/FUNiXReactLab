@@ -189,7 +189,7 @@ class StaffList extends Component {
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>
             <Form onSubmit={this.handleSubmit}>
-              <Row className='control-group'>
+              <Row className='control-group mb-4'>
                 <Label htmlFor='name' md={4}>
                   Tên
                 </Label>
@@ -208,7 +208,7 @@ class StaffList extends Component {
                   <FormFeedback>{errors.name}</FormFeedback>
                 </Col>
               </Row>
-              <Row className='control-group'>
+              <Row className='control-group  mb-4'>
                 <Label htmlFor='doB' md={4}>
                   Ngày sinh
                 </Label>
@@ -227,7 +227,7 @@ class StaffList extends Component {
                   <FormFeedback>{errors.doB}</FormFeedback>
                 </Col>
               </Row>
-              <Row className='control-group'>
+              <Row className='control-group  mb-4'>
                 <Label htmlFor='startDate' md={4}>
                   Ngày vào công ty
                 </Label>
@@ -246,7 +246,7 @@ class StaffList extends Component {
                   <FormFeedback>{errors.startDate}</FormFeedback>
                 </Col>
               </Row>
-              <Row className='control-group'>
+              <Row className='control-group  mb-4'>
                 <Label htmlFor='department' md={4}>
                   Phòng ban
                 </Label>
@@ -267,7 +267,7 @@ class StaffList extends Component {
                   <FormFeedback>{errors.department}</FormFeedback>
                 </Col>
               </Row>
-              <Row className='control-group'>
+              <Row className='control-group  mb-4'>
                 <Label htmlFor='salaryScale' md={4}>
                   Hệ số lương
                 </Label>
@@ -306,7 +306,7 @@ class StaffList extends Component {
                   <FormFeedback>{errors.annualLeave}</FormFeedback>
                 </Col>
               </Row>
-              <Row className='control-group'>
+              <Row className='control-group  mb-3'>
                 <Label htmlFor='overTime' md={4}>
                   Số ngày đã làm thêm
                 </Label>
