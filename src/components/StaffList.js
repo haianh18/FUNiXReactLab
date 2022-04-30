@@ -1,20 +1,18 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Card, CardTitle, CardImg, Button, Modal, Col, Form, Input, ModalHeader, ModalBody, Row, Label } from "reactstrap";
+import React, { Component } from 'react';
+import { Card, CardImg, CardText, Button, Row, Col, Modal, ModalHeader, ModalBody, Label, Input } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 function RenderStaffList({ staffs }) {
-
   return (
     <Card>
-      <Link to={`/menu/${staffs.id}`} >
-        <CardImg width="100%" src={staffs.image} alt={staffs.name} />
-        <CardTitle style={{ color: "black", textAlign: "center" }}>{staffs.name}</CardTitle>
+      <Link to={`/staff/${staffs.id}`} >
+        <CardImg className="mx-auto img-thumbnail" width="100%" src={staffs.image} alt={staffs.name} />
+        <CardText style={{ color: "black", textAlign: "center" }}>{staffs.name}</CardText>
       </Link>
     </Card>
   );
 }
-
 
 class StaffList extends Component {
   constructor(props) {
@@ -22,50 +20,34 @@ class StaffList extends Component {
     this.state = {
       staffs: this.props.staffs,
       name: '',
-      modalOpen: false,
+      isModalOpen: false,
     }
-    this.timNhanvien = this.timNhanvien.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
   }
-
-
-  handleSubmit(newStaff) {
-
-    this.props.onAdd(newStaff);
-  }
-
-
-  toggleModal() {
+  handleSearch(event) {
+    event.preventDefault();
+    const result = this.props.staffs.filter(s => s.name.toLowerCase().match(this.state.name.toLowerCase()));
     this.setState({
-      modalOpen: !this.state.modalOpen
+      staffs: result,
+      name: this.name.value,
     });
-  }
 
+  }
   handleInputChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
-
-  timNhanvien(event) {
-    event.preventDefault();
-    const result = this.props.staffs.filter((val) => {
-      if (this.state.name === "") {
-        return val;
-      } else if (
-        val.name.toLowerCase().includes(this.state.name.toLocaleLowerCase())
-      ) {
-        return val;
-      } else {
-        return null;
-      }
-    })
+  toggleModal() {
     this.setState({
-      staffs: result,
-      name: this.name.value
+      isModalOpen: !this.state.isModalOpen
     });
+  }
+  handleSubmit(values) {
+    this.props.onAdd(values);
   }
 
   render() {
@@ -76,127 +58,105 @@ class StaffList extends Component {
     const minLength = (len) => (val) => !chuanhap(val) || (val && (val.length >= len));
     const maxLength = (len) => (val) => !(val) || (val.length <= len);
     const soDuong = (val) => !(isNumber(val)) || val >= 0;
-    const listNhanvien = this.state.staffs.map((staffs) => {
+    const menu = this.state.staffs.map((staffs) => {
       return (
-        <div className="col-12 col-md-4 col-lg-2">
+        <div key={staffs.id} className="col-6 col-md-4 col-lg-2 mb-1 mt-1">
           <RenderStaffList staffs={staffs} />
         </div>
       );
     });
-
     return (
-      <div className="container">
+      <div className="container mb-1">
         <div className="row">
           <div className="col-12 col-md-6 mt-3">
-            <div className="row">
-              <div className="col-10 col-md-10">
+            <div className='row'>
+              <div className="col-10 col-md-10" >
                 <h3>Nhân viên</h3>
               </div>
               <div className="col-2 col-auto">
-                <Button outline onClick={this.toggleModal}>
-                  <span className="fa fa-plus fa-lg"></span>
+                <Button outline type="submit" onClick={this.toggleModal}>
+                  <span className='fa fa-plus fa-lg'></span>
                 </Button>
               </div>
             </div>
           </div>
-          <div className="col-12 col-md-6 mt-3">
-            <Form onSubmit={this.timNhanvien}>
-              <Row className="form-group">
-                <Col md={{ size: 6, offset: 2 }} style={{ marginTop: "10px" }}>
-                  <Input
-                    type='text'
-                    id='name'
-                    name='name'
-                    placeholder="Tìm kiếm nhân viên..."
-                    innerRef={(input) => this.name = input}
-                    onChange={this.handleInputChange}
-                  />
-                </Col>
-              </Row>
-              <Col md={{ size: 2, offset: 1 }} style={{ marginTop: "10px" }}>
-                <Button type="submit" color="success">
+          <div className='col-12 col-md-6 mt-3'>
+            <form onSubmit={this.handleSearch} className='form-group row'>
+              <div className="col-8 col-md-8">
+                <Input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder='Tìm kiếm nhân viên...'
+                  innerRef={(input) => this.name = input}
+                  onChange={this.handleInputChange}
+                />
+              </div>
+              <div className="col-4 col-md-4">
+                <button className="btn btn-success" type='submit'>
                   Tìm kiếm
-                </Button>
-              </Col>
-            </Form>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
         <hr />
-        <div className="dataResult container m-1">
-          <div className="row">{listNhanvien}</div>
+        <div className="row">
+          {menu}
         </div>
-        <Modal isOpen={this.state.modalOpen} toggle={this.toggleModal}>
+        <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Thêm nhân viên</ModalHeader>
           <ModalBody>
             <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
-              <Row className='form-group mb-3'>
-                <Label htmlFor='name' md={4}>
-                  Tên
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="username" md={4}>Tên</Label>
                 <Col md={8}>
-                  <Control.text
-                    model=".name"
-                    className='form-control'
-                    id='name'
-                    name='name'
+                  <Control.text model=".username" id="username" name="username"
+                    placeholder="Name"
+                    className="form-control"
                     validators={{
                       chuanhap,
-                      minLength: minLength(3), maxLength: maxLength(30)
+                      minLength: minLength(3),
+                      maxLength: maxLength(30)
                     }}
                   />
                   <Errors
                     className="text-danger"
-                    model=".name"
+                    model=".username"
                     show="touched"
                     messages={{
-                      chuanhap: 'Yêu cầu nhập ',
+                      chuanhap: 'Chưa nhập ',
                       minLength: 'Ít nhất 3 kí tự',
                       maxLength: 'Tối đa 30 kí tự'
+
                     }}
                   />
                 </Col>
               </Row>
-              <Row className='form-group mb-3'>
-                <Label htmlFor='doB' md={4}>
-                  Ngày sinh
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="doB" md={4}>Ngày sinh</Label>
                 <Col md={8}>
-                  <Control.text
-                    type='date'
-                    className='form-control'
-                    id='doB'
-                    name='doB'
-                    model='.doB'
+                  <Control.text model=".doB" id="doB" name="doB"
+                    className="form-control" type='date'
                     defaultValue="2000-01-01"
                   />
                 </Col>
               </Row>
-              <Row className='form-group mb-3'>
-                <Label htmlFor='startDate' md={4}>
-                  Ngày vào công ty
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="startDate" md={4}>Ngày vào công ty</Label>
                 <Col md={8}>
-                  <Control.text
-                    type='date'
-                    className='form-control'
-                    id='startDate'
-                    name='startDate'
-                    defaultValue='2000-01-01'
-                    model='.startDate'
+                  <Control.text model=".startDate" id="startDate" name="startDate"
+                    className="form-control" type='date'
+                    defaultValue="2022-01-01"
                   />
                 </Col>
               </Row>
-              <Row className='form-group mb-3'>
-                <Label htmlFor='department' md={4}>
-                  Phòng ban
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="department" md={4}>Phòng ban</Label>
                 <Col md={8}>
-                  <Control.select
-                    model='.department'
-                    id='department'
-                    name='department'
+                  <Control.select model=".department" id="department" name="department"
                     defaultValue='Sale'
-                  >
+                    className="form-control">
                     <option>Sale</option>
                     <option>HR</option>
                     <option>Marketing</option>
@@ -205,18 +165,13 @@ class StaffList extends Component {
                   </Control.select>
                 </Col>
               </Row>
-              <Row className='form-group mb-3'>
-                <Label htmlFor='salaryScale' md={4}>
-                  Hệ số lương
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="salaryScale" md={4}>Hệ số lương</Label>
                 <Col md={8}>
-                  <Control.text
-                    model='.salaryScale'
-                    className='form-control'
-                    id='salaryScale'
-                    name='salaryScale'
-                    placeholder='1->3'
+                  <Control.text model=".salaryScale" id="salaryScale" name="salaryScale"
+                    placeholder="1->3"
                     defaultValue='1'
+                    className="form-control"
                     validators={{
                       chuanhap,
                       isNumber,
@@ -237,16 +192,12 @@ class StaffList extends Component {
                   />
                 </Col>
               </Row>
-              <Row className='form-group mb-1'>
-                <Label htmlFor='annualLeave' md={4}>
-                  Số ngày nghỉ còn lại
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="annualLeave" md={4}>Số ngày nghỉ còn lại</Label>
                 <Col md={8}>
-                  <Control.text
-                    model='.annualLeave'
-                    className='form-control'
-                    id='anualLeave'
-                    name='annualLeave'
+                  <Control.text model=".annualLeave" id="annualLeave" name="annualLeave"
+                    defaultValue='0'
+                    className="form-control"
                     validators={{
                       chuanhap,
                       isNumber,
@@ -261,20 +212,17 @@ class StaffList extends Component {
                       chuanhap: 'Chưa nhập ',
                       isNumber: 'Phải là số',
                       soDuong: 'Phải >=0'
+
                     }}
                   />
                 </Col>
               </Row>
-              <Row className='form-group mb-3'>
-                <Label htmlFor='overTime' md={4}>
-                  Số ngày đã làm thêm
-                </Label>
+              <Row className="form-group">
+                <Label htmlFor="overTime" md={4}>Số ngày làm thêm</Label>
                 <Col md={8}>
-                  <Control.text
-                    model='.overTime'
-                    className='form-control'
-                    id='overTime'
-                    name='overTime'
+                  <Control.text model=".overTime" id="overTime" name="overTime"
+                    defaultValue='0'
+                    className="form-control"
                     validators={{
                       chuanhap,
                       isNumber,
@@ -303,11 +251,11 @@ class StaffList extends Component {
               </Row>
             </LocalForm>
           </ModalBody>
-        </Modal >
-      </div >
+        </Modal>
+      </div>
     );
   }
-
 }
 
 export default StaffList;
+
