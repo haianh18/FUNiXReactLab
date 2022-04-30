@@ -31,7 +31,8 @@ class StaffList extends Component {
   }
 
 
-  handleSubmit = () => {
+  handleSubmit(newStaff) {
+
     this.props.onAdd(newStaff);
   }
 

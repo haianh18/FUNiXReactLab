@@ -23,9 +23,33 @@ class Main extends Component {
 
   addStaff = (staff) => {
     const id = Math.floor(Math.random() * 10000 + 1);
-    const newStaff = { id, ...staff };
+    const newList = this.props.staffs;
+    const newStaff = {
+      id: id,
+      name: staff.username,
+      doB: staff.doB,
+      salaryScale: staff.salaryScale,
+      startDate: staff.startDate,
+      department: staff.department,
+      annualLeave: staff.annualLeave,
+      overTime: staff.overTime,
+      image: '/assets/images/alberto.png',
+    }
+    if (staff.department === 'Sale')
+      newStaff.department = this.props.department[0];
+    else if (staff.department === 'HR')
+      newStaff.department = this.props.department[1];
+
+    else if (staff.department === 'Marketing')
+      newStaff.department = this.props.department[2];
+    else if (staff.department === 'IT')
+      newStaff.department = this.props.department[3];
+    else
+      newStaff.department = this.props.department[4];
+
+    newList.push(newStaff);
     this.setState({
-      staffs: [...this.state.staffs, newStaff]
+      staffs: newList
     });
   }
 
